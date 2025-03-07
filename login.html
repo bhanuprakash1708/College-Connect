@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login & Registration Form</title>
+    <link rel="stylesheet" href="lstyles.css">
+</head>
+
+<body>
+    <div class="container">
+        <input type="checkbox" id="check">
+        
+        <!-- Login Form -->
+        <div class="login form">
+            <header>Login</header>
+            <form action="#" id="loginForm">
+                <input type="text" id="loginEmail" placeholder="Enter your email" required>
+                <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                <div class="error-message" style="color: red;"></div>
+                <a href="#">Forgot password?</a>
+                <input type="button" class="button" value="Login" onclick="login()">
+            </form>
+            <div class="signup">
+                <span class="signup">Don't have an account?
+                    <label for="check">Signup</label>
+                </span>
+            </div>
+        </div>
+
+        <!-- Registration Form -->
+        <div class="registration form">
+            <header>Signup</header>
+            <form action="#" id="signupForm">
+                <input type="text" id="signupEmail" placeholder="Enter your email" required>
+                <input type="password" id="signupPassword" placeholder="Create a password" required>
+                <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+                <div class="error-message" style="color: red;"></div>
+                <input type="button" class="button" value="Signup" onclick="signup()">
+            </form>
+            <div class="signup">
+                <span class="signup">Already have an account?
+                    <label for="check">Login</label>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simulate a database of registered users
+        const registeredUsers = [
+            { email: "user@example.com", password: "password123" },
+            { email: "admin@domain.com", password: "admin123" }
+        ];
+
+        // Function to handle Login form submission
+        function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const errorMessage = document.querySelector('.login .error-message');
+
+            // Basic validation (check if fields are empty)
+            if (!email || !password) {
+                errorMessage.textContent = 'Please fill in both fields.';
+                return;
+            }
+
+            // Check if the email and password match any registered user
+            const user = registeredUsers.find(user => user.email === email);
+
+            if (!user) {
+                // If email doesn't exist
+                errorMessage.textContent = 'No account found with this email.';
+            } else if (user.password !== password) {
+                // If the password is incorrect
+                errorMessage.textContent = 'Incorrect password. Please try again.';
+            } else {
+                // Successful login
+                errorMessage.textContent = '';
+                alert('Login successful!');
+                // Redirect to the category page
+                window.location.href = "categories.html"; // Redirection to the category page
+            }
+        }
+
+        // Function to handle Signup form submission
+        function signup() {
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const errorMessage = document.querySelector('.registration .error-message');
+
+            // Basic validation (check if fields are empty)
+            if (!email || !password || !confirmPassword) {
+                errorMessage.textContent = 'Please fill in all fields.';
+            } else if (password !== confirmPassword) {
+                // If passwords do not match
+                errorMessage.textContent = 'Passwords do not match.';
+            } else {
+                // Check if the email is already registered
+                const existingUser = registeredUsers.find(user => user.email === email);
+                if (existingUser) {
+                    errorMessage.textContent = 'This email is already registered. Please log in.';
+                } else {
+                    // Add new user to the "database"
+                    registeredUsers.push({ email, password });
+                    errorMessage.textContent = '';
+                    alert('Signup successful! Please log in.');
+                    // You can redirect the user to the login form or directly log them in
+                    document.getElementById('check').checked = false;
+                }
+            }
+        }
+
+        // JavaScript to toggle between Login and Signup forms
+        const checkBox = document.getElementById('check');
+        const loginForm = document.querySelector('.login');
+        const signupForm = document.querySelector('.registration');
+
+        checkBox.addEventListener('change', () => {
+            if (checkBox.checked) {
+                // Show Signup Form, hide Login Form
+                loginForm.style.display = 'none';
+                signupForm.style.display = 'block';
+            } else {
+                // Show Login Form, hide Signup Form
+                loginForm.style.display = 'block';
+                signupForm.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+
+</html>
+
+
